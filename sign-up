@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Zeetex Affiliate</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { background: #4a0404; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: #600707; padding: 40px; border-radius: 20px; width: 350px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px; }
+        .btn { background: #8b0000; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        /* Custom UI Alert Box */
+        #alertBox { display: none; position: fixed; top: 20px; background: #c80000; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="alertBox"></div>
+<div class="card">
+    <svg width="50" height="50" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+    <h2>Welcome to Zeetex!</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <label><input type="checkbox" id="terms"> I agree to Terms</label>
+    <button class="btn" onclick="signUp()">Sign Up</button>
+</div>
+
+<script>
+async function signUp() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const res = await fetch('/signup', { method: 'POST', body: JSON.stringify({email, password}), headers: {'Content-Type': 'application/json'} });
+    const data = await res.json();
+    if(data.error) showUiAlert(data.error);
+    else window.location.href = 'dashboard.html';
+}
+
+function showUiAlert(msg) {
+    const box = document.getElementById('alertBox');
+    box.innerHTML = msg + ' <span onclick="this.parentElement.style.display=\'none\'">×</span>';
+    box.style.display = 'block';
+}
+</script>
+</body>
+</html>
